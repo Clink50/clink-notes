@@ -25,7 +25,7 @@
               />
               <div class="modal-footer">
                 <button @click.prevent="$emit('close')">Cancel</button>
-                <button @click.prevent="$emit(type.toLowerCase(), note)">
+                <button @click.prevent="editNote ? onUpdateNote(note) : onAddNote(note)">
                   {{ type }}
                 </button>
               </div>
@@ -38,17 +38,14 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
+
 export default {
   props: {
     editNote: {
       type: Object,
       required: false,
-      default: () => ({
-        noteId: '',
-        title: '',
-        category: '',
-        description: '',
-      }),
+      default: null,
     },
     options: {
       required: true,
@@ -68,8 +65,44 @@ export default {
     };
   },
   computed: {
+    ...mapState('notes', ['notes']),
+    ...mapState('pills', ['pills']),
+
     type() {
       return this.editNote ? 'Update' : 'Add';
+    },
+  },
+  methods: {
+    ...mapMutations('notes', ['addNote', 'updateNote']),
+
+    onAddNote(data) {
+      const chosenPillId = this.pills.find((pill) => pill.text === data.category).id;
+      const newNoteId = this.notes.length + 1;
+
+      const newNote = {
+        id: newNoteId,
+        pillId: chosenPillId,
+        done: false,
+        title: data.title,
+        category: data.category,
+        description: data.description,
+        createdAt: new Date(),
+      };
+
+      this.addNote(newNote);
+      this.$emit('close');
+    },
+    onUpdateNote({ noteId, title, category, description }) {
+      console.log('update');
+      this.pills[this.pillId].notes[noteId] = {
+        done: false,
+        title,
+        category,
+        description,
+        createdAt: new Date(),
+      };
+      this.noteDetails = null;
+      this.showNoteModal = false;
     },
   },
 };

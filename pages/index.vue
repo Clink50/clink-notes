@@ -4,379 +4,64 @@
     <section class="pills-container">
       <div class="left-pills">
         <Pill
-          v-for="({ text, color, circle, isActive }, index) in pills"
-          :id="index"
-          :key="index"
-          :text="text"
-          :color="color"
-          :circle="circle"
-          :is-active="isActive"
-          @clicked="changeActive(index)"
+          v-for="pill in pills"
+          :key="pill.id"
+          v-bind="pill"
+          @clicked="updateActivePill(pill.id)"
         />
       </div>
       <button class="add-note" @click="showNoteModal = true">+ Add Note</button>
     </section>
     <section class="main-container">
-      <div v-if="notesAvailable" class="no-notes-container">
+      <div v-if="notesAvailable(activePillId)" class="no-notes-container">
         <h1 class="no-notes">You don't have any notes</h1>
         <img src="~/assets/img/add-note-illustration.svg" alt="No notes illustration" />
       </div>
       <div v-else class="completed-and-notes-container">
-        <p class="completed">You have {{ notesCompleted }}/{{ totalNotes }} notes completed</p>
+        <p class="completed">
+          You have {{ notesCompleted(activePillId) }}/{{ totalNotes(activePillId) }} notes completed
+        </p>
         <div class="notes-container">
-          <template v-for="(note, index) in currentNotes">
-            <Note
-              v-bind="note"
-              :id="index"
-              :key="index"
-              @done="completeNote(index)"
-              @edit="editNote(index)"
-              @delete="deleteNote(index)"
-            />
-          </template>
+          <Note
+            v-for="note in notes"
+            :key="note.id"
+            v-bind="note"
+            @edit="editNote(note.id)"
+            @delete="deleteNote(note.id)"
+            @done="completeNote(note.id)"
+          />
         </div>
       </div>
     </section>
-    <NoteModal
-      v-if="showNoteModal"
-      :options="categories"
-      @add="onAddNote"
-      @update="updateNote"
-      @close="
-        showNoteModal = false;
-        noteDetails = null;
-      "
-    />
+    <NoteModal v-if="showNoteModal" :options="categories" @close="showNoteModal = false" />
   </main>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 
 export default {
   data() {
     return {
-      pillId: 0,
+      activePillId: 0,
       showNoteModal: false,
-      noteDetails: null,
-      pills: [
-        {
-          id: 0,
-          text: 'All',
-          circle: false,
-          color: 'blue',
-          isActive: true,
-          notes: [
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Home',
-              description:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. A voluptas quaerat eum provident tenetur sed minus perferendis repudiandae commodi rem.',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Home',
-              description:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, officia!',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Home',
-              description:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus consequuntur, sit voluptas dolorem sapiente sunt!',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Home',
-              description:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, officia!',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Work',
-              description:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus consequuntur, sit voluptas dolorem sapiente sunt!',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Work',
-              description:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, officia!',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: true,
-              title: 'Meeting with Jane',
-              category: 'Personal',
-              description:
-                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita…',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Personal',
-              description:
-                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita…',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: true,
-              title: 'Read a book',
-              category: 'Personal',
-              description: 'This is a test note.',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Personal',
-              description: 'This is a test note.',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-          ],
-        },
-        {
-          id: 1,
-          text: 'Home',
-          circle: true,
-          isActive: false,
-          color: 'orange',
-          notes: [
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Home',
-              description:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. A voluptas quaerat eum provident tenetur sed minus perferendis repudiandae commodi rem.',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Home',
-              description:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, officia!',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Home',
-              description:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus consequuntur, sit voluptas dolorem sapiente sunt!',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Home',
-              description:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, officia!',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-          ],
-        },
-        {
-          id: 2,
-          text: 'Work',
-          circle: true,
-          isActive: false,
-          color: 'purple',
-          notes: [
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Work',
-              description:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus consequuntur, sit voluptas dolorem sapiente sunt!',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Work',
-              description:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, officia!',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-          ],
-        },
-        {
-          id: 3,
-          text: 'Personal',
-          circle: true,
-          isActive: false,
-          color: 'green',
-          notes: [
-            {
-              done: true,
-              title: 'Meeting with Jane',
-              category: 'Personal',
-              description:
-                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita…',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Personal',
-              description:
-                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita…',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: true,
-              title: 'Read a book',
-              category: 'Personal',
-              description: 'This is a test note.',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-            {
-              done: false,
-              title: 'Read a book',
-              category: 'Personal',
-              description: 'This is a test note.',
-              createdAt: new Date(
-                new Date(2020, 0, 1).getTime() +
-                  Math.random() * (new Date().getTime() - new Date(2020, 0, 1).getTime())
-              ),
-            },
-          ],
-        },
-      ],
     };
   },
   computed: {
+    ...mapState('pills', ['pills']),
+    ...mapState('notes', ['notes']),
     ...mapState('popover', ['popover']),
-    notesAvailable() {
-      return this.pills[this.pillId].notes.length === 0;
-    },
-    notesCompleted() {
-      return this.pills[this.pillId].notes.reduce(
-        (completed, note) => (completed += note.done ? 1 : 0),
-        0
-      );
-    },
-    totalNotes() {
-      return this.pills[this.pillId].notes.length;
-    },
-    currentNotes() {
-      return this.pills[this.pillId].notes;
-    },
+
+    ...mapGetters('notes', ['notesAvailable', 'currentNotes', 'notesCompleted', 'totalNotes']),
+
     categories() {
       return ['Home', 'Work', 'Personal'];
     },
   },
   methods: {
+    ...mapMutations('pills', ['updateActivePill']),
     ...mapMutations('notes', ['addNote', 'updateNote', 'deleteNote', 'completeNote']),
-    changeActive(id) {
-      this.pillId = id;
-      const activeId = this.pills.find((pill) => pill.isActive).id;
-      this.pills[activeId].isActive = false;
-      this.pills[id].isActive = true;
-    },
-    onAddNote(data) {
-      const pillNote = this.pills.find((pill) => pill.text === data.category);
-      const newNoteId = pillNote.notes.length + 1;
 
-      const newNote = {
-        id: newNoteId,
-        done: false,
-        title: data.title,
-        category: data.category,
-        description: data.description,
-        createdAt: new Date(),
-      };
-
-      this.addNote(newNote);
-
-      // this.pills[0].notes.push(newNote);
-      // this.pills[pillNote.id].notes.push(newNote);
-      // this.showNoteModal = false;
-    },
-    // editNote(noteId) {
-    //   if (this.showNoteModal) {
-    //     this.showNoteModal = false;
-    //   } else {
-    //     const { title, category, description } = this.pills[this.pillId].notes[noteId];
-    //     this.noteDetails = {
-    //       noteId,
-    //       title,
-    //       category,
-    //       description,
-    //     };
-    //     this.showNoteModal = true;
-    //   }
-    // },
     // updateNote({ noteId, title, category, description }) {
     //   this.pills[this.pillId].notes[noteId] = {
     //     done: false,
@@ -387,13 +72,6 @@ export default {
     //   };
     //   this.noteDetails = null;
     //   this.showNoteModal = false;
-    // },
-    // completeNote(noteId) {
-    //   this.pills[this.pillId].notes[noteId].done = !this.pills[this.pillId].notes[noteId].done;
-    // },
-    // deleteNote(noteId) {
-    //   this.pills[this.pillId].notes.splice(noteId, 1);
-    //   this.popover = false;
     // },
   },
 };
@@ -495,5 +173,9 @@ export default {
 
 .purple {
   background-color: $purple;
+}
+
+.gray {
+  background-color: $dark-gray;
 }
 </style>

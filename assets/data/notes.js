@@ -1,5 +1,7 @@
 module.exports = [
   {
+    id: 0,
+    pillId: 1,
     done: false,
     title: 'Read a book',
     category: 'Home',
@@ -11,6 +13,8 @@ module.exports = [
     ),
   },
   {
+    id: 1,
+    pillId: 1,
     done: false,
     title: 'Read a book',
     category: 'Home',
@@ -21,6 +25,8 @@ module.exports = [
     ),
   },
   {
+    id: 2,
+    pillId: 1,
     done: false,
     title: 'Read a book',
     category: 'Home',
@@ -32,6 +38,8 @@ module.exports = [
     ),
   },
   {
+    id: 3,
+    pillId: 1,
     done: false,
     title: 'Read a book',
     category: 'Home',
@@ -42,6 +50,8 @@ module.exports = [
     ),
   },
   {
+    id: 4,
+    pillId: 2,
     done: false,
     title: 'Read a book',
     category: 'Work',
@@ -53,6 +63,8 @@ module.exports = [
     ),
   },
   {
+    id: 5,
+    pillId: 2,
     done: false,
     title: 'Read a book',
     category: 'Work',
@@ -63,6 +75,8 @@ module.exports = [
     ),
   },
   {
+    id: 6,
+    pillId: 3,
     done: true,
     title: 'Meeting with Jane',
     category: 'Personal',
@@ -74,6 +88,8 @@ module.exports = [
     ),
   },
   {
+    id: 7,
+    pillId: 3,
     done: false,
     title: 'Read a book',
     category: 'Personal',
@@ -85,6 +101,8 @@ module.exports = [
     ),
   },
   {
+    id: 8,
+    pillId: 3,
     done: true,
     title: 'Read a book',
     category: 'Personal',
@@ -95,6 +113,8 @@ module.exports = [
     ),
   },
   {
+    id: 9,
+    pillId: 3,
     done: false,
     title: 'Read a book',
     category: 'Personal',

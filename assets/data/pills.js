@@ -5,7 +5,6 @@ module.exports = [
     circle: false,
     color: 'blue',
     isActive: true,
-    notes: [],
   },
   {
     id: 1,
@@ -13,7 +12,6 @@ module.exports = [
     circle: true,
     isActive: false,
     color: 'orange',
-    notes: [],
   },
   {
     id: 2,
@@ -21,7 +19,6 @@ module.exports = [
     circle: true,
     isActive: false,
     color: 'purple',
-    notes: [],
   },
   {
     id: 3,
@@ -29,6 +26,5 @@ module.exports = [
     circle: true,
     isActive: false,
     color: 'green',
-    notes: [],
   },
 ];

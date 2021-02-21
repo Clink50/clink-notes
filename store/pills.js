@@ -1,10 +1,19 @@
 export const state = () => ({
+  // possibly add active pill state here
   pills: [],
 });
 
 export const mutations = {
   setPills: (state, pills) => {
     state.pills = pills;
+  },
+  updateActivePill: (state, pill) => {
+    // Find the current active
+    const activeId = state.pills.find((pill) => pill.isActive).id;
+    // Set it to false
+    state.pills[activeId].isActive = false;
+    // Set the clicked pill to active
+    state.pills[pill].isActive = true;
   },
   addPill: (state, pill) => {
     console.log('Pill to create:', pill);
@@ -22,8 +31,4 @@ export const mutations = {
 
 export const actions = {};
 
-export const getters = {
-  getPills: (state) => {
-    return state.pills;
-  },
-};
+export const getters = {};

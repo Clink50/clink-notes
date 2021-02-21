@@ -2,6 +2,8 @@ import pills from '../assets/data/pills';
 import notes from '../assets/data/notes';
 
 // Root Module
+// export const plugins = [filter];
+
 // Your state value should always be a function to avoid unwanted shared state on the server side.
 export const state = () => ({});
 

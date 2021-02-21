@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="note"
-    :class="getColor(category)"
-    :style="done ? 'text-decoration: line-through;' : ''"
-  >
+  <div class="note" :class="noteColor" :style="done ? 'text-decoration: line-through;' : ''">
     <div class="note__header">
       <div class="note__header--title">
         <input
@@ -11,7 +7,7 @@
           type="checkbox"
           :checked="done"
           :name="`${category}-${id}`"
-          @change="$emit('done')"
+          @change="completeNote(id)"
         />
         <label :for="`${category}-${id}`" class="title">{{ title }}</label>
       </div>
@@ -62,9 +58,15 @@ export default {
   },
   computed: {
     ...mapState('popover', ['popover']),
+
+    noteColor() {
+      return this.done ? 'gray' : this.getColor(this.category);
+    },
   },
   methods: {
+    ...mapMutations('notes', ['completeNote']),
     ...mapMutations('popover', ['togglePopover']),
+
     getColor(type) {
       return {
         Home: 'orange',
