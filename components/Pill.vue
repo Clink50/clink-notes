@@ -1,11 +1,13 @@
 <template>
-  <button class="pill" :class="isActive ? [color, 'active'] : ''" @click="$emit('clicked')">
+  <button class="pill" :class="isActive ? [color, 'active'] : ''" @click="onChange">
     <p class="pill__text">{{ text }}</p>
     <span v-if="circle" class="pill__circle" :class="color"></span>
   </button>
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
   props: {
     id: {
@@ -29,6 +31,14 @@ export default {
     isActive: {
       required: true,
       type: Boolean,
+    },
+  },
+  methods: {
+    ...mapMutations('pills', ['updateActivePill']),
+
+    onChange() {
+      this.updateActivePill(this.id);
+      this.$emit('pillChange', this.id);
     },
   },
 };

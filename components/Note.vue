@@ -12,7 +12,9 @@
         <label :for="`${category}-${id}`" class="title">{{ title }}</label>
       </div>
       <div class="note__header--buttons">
-        <button @click.prevent="$emit('edit')"><i class="fas fa-pencil-alt"></i></button>
+        <button @click.prevent="$emit('edit')">
+          <i class="fas fa-pencil-alt"></i>
+        </button>
         <button @click.prevent="togglePopover(!popover)">
           <i class="fas fa-trash-alt"></i>
         </button>
@@ -139,6 +141,7 @@ export default {
   }
 
   .note__content {
+    flex: 1;
     text-align: left;
 
     &--description {

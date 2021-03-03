@@ -25,7 +25,7 @@
               />
               <div class="modal-footer">
                 <button @click.prevent="$emit('close')">Cancel</button>
-                <button @click.prevent="editNote ? onUpdateNote(note) : onAddNote(note)">
+                <button @click.prevent="onAddUpdateNote(note)">
                   {{ type }}
                 </button>
               </div>
@@ -51,6 +51,10 @@ export default {
       required: true,
       type: Array,
     },
+    pillName: {
+      required: true,
+      type: String,
+    },
   },
   data() {
     return {
@@ -59,7 +63,7 @@ export default {
         : {
             noteId: '',
             title: '',
-            category: '',
+            category: this.pillName === 'All' ? '' : this.pillName,
             description: '',
           },
     };
@@ -75,34 +79,38 @@ export default {
   methods: {
     ...mapMutations('notes', ['addNote', 'updateNote']),
 
-    onAddNote(data) {
+    onAddUpdateNote(data) {
       const chosenPillId = this.pills.find((pill) => pill.text === data.category).id;
-      const newNoteId = this.notes.length + 1;
+      let noteDetails = {};
+      if (this.editNote) {
+        noteDetails = {
+          id: this.editNote.id,
+          pillId: chosenPillId,
+          done: false,
+          title: data.title,
+          category: data.category,
+          description: data.description,
+          createdAt: new Date(),
+        };
 
-      const newNote = {
-        id: newNoteId,
-        pillId: chosenPillId,
-        done: false,
-        title: data.title,
-        category: data.category,
-        description: data.description,
-        createdAt: new Date(),
-      };
+        this.updateNote(noteDetails);
+      } else {
+        const newNoteId = this.notes.length + 1;
 
-      this.addNote(newNote);
+        noteDetails = {
+          id: newNoteId,
+          pillId: chosenPillId,
+          done: false,
+          title: data.title,
+          category: data.category,
+          description: data.description,
+          createdAt: new Date(),
+        };
+
+        this.addNote(noteDetails);
+      }
+
       this.$emit('close');
-    },
-    onUpdateNote({ noteId, title, category, description }) {
-      console.log('update');
-      this.pills[this.pillId].notes[noteId] = {
-        done: false,
-        title,
-        category,
-        description,
-        createdAt: new Date(),
-      };
-      this.noteDetails = null;
-      this.showNoteModal = false;
     },
   },
 };

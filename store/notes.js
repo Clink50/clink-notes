@@ -10,10 +10,10 @@ export const mutations = {
     state.notes.push(note);
   },
   updateNote: (state, updatedNote) => {
-    console.log('Updated note data:', updatedNote);
+    state.notes[updatedNote.id] = updatedNote;
   },
   deleteNote: (state, noteId) => {
-    state.notes.splice(noteId, 1);
+    state.notes = state.notes.filter(({ id }) => id !== noteId);
   },
   completeNote: (state, noteId) => {
     state.notes[noteId].done = !state.notes[noteId].done;

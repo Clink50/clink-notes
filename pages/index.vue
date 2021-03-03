@@ -1,13 +1,13 @@
 <template>
   <main class="container">
-    <SearchBar placeholder="Search notes..." />
+    <SearchBar v-model="searchText" placeholder="Search notes..." />
     <section class="pills-container">
       <div class="left-pills">
         <Pill
           v-for="pill in pills"
           :key="pill.id"
           v-bind="pill"
-          @clicked="updateActivePill(pill.id)"
+          @pillChange="activePillId = pill.id"
         />
       </div>
       <button class="add-note" @click="showNoteModal = true">+ Add Note</button>
@@ -23,7 +23,7 @@
         </p>
         <div class="notes-container">
           <Note
-            v-for="note in notes"
+            v-for="note in filteredNotes"
             :key="note.id"
             v-bind="note"
             @edit="editNote(note.id)"
@@ -33,7 +33,13 @@
         </div>
       </div>
     </section>
-    <NoteModal v-if="showNoteModal" :options="categories" @close="showNoteModal = false" />
+    <NoteModal
+      v-if="showNoteModal"
+      :edit-note="noteDetails || undefined"
+      :options="categories"
+      :pill-name="pills[activePillId].text"
+      @close="closeModal"
+    />
   </main>
 </template>
 
@@ -45,6 +51,8 @@ export default {
     return {
       activePillId: 0,
       showNoteModal: false,
+      noteDetails: null,
+      searchText: '',
     };
   },
   computed: {
@@ -54,25 +62,31 @@ export default {
 
     ...mapGetters('notes', ['notesAvailable', 'currentNotes', 'notesCompleted', 'totalNotes']),
 
+    filteredNotes() {
+      return (this.activePillId === 0
+        ? this.notes.filter(this.filterNotes())
+        : this.notes.filter(({ pillId }) => pillId === this.activePillId).filter(this.filterNotes())
+      ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    },
+
     categories() {
       return ['Home', 'Work', 'Personal'];
     },
   },
   methods: {
-    ...mapMutations('pills', ['updateActivePill']),
     ...mapMutations('notes', ['addNote', 'updateNote', 'deleteNote', 'completeNote']),
 
-    // updateNote({ noteId, title, category, description }) {
-    //   this.pills[this.pillId].notes[noteId] = {
-    //     done: false,
-    //     title,
-    //     category,
-    //     description,
-    //     createdAt: new Date(),
-    //   };
-    //   this.noteDetails = null;
-    //   this.showNoteModal = false;
-    // },
+    filterNotes() {
+      return ({ title }) => title.toLowerCase().startsWith(this.searchText.toLowerCase());
+    },
+    editNote(id) {
+      this.showNoteModal = true;
+      this.noteDetails = this.notes[id];
+    },
+    closeModal() {
+      this.showNoteModal = false;
+      this.noteDetails = null;
+    },
   },
 };
 </script>

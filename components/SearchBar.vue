@@ -1,6 +1,11 @@
 <template>
   <div class="search">
-    <input type="search" :placeholder="placeholder" />
+    <input
+      type="search"
+      :value="value"
+      :placeholder="placeholder"
+      @input="$emit('input', $event.target.value)"
+    />
     <i class="fas fa-search"></i>
   </div>
 </template>
@@ -8,6 +13,10 @@
 <script>
 export default {
   props: {
+    value: {
+      type: String,
+      required: true,
+    },
     placeholder: {
       type: String,
       required: true,
