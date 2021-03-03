@@ -7,10 +7,15 @@ export const mutations = {
     state.notes = notes;
   },
   addNote: (state, note) => {
-    state.notes.push(note);
+    note.id = state.notes[state.notes.length - 1].id + 1;
+    state.notes = [...state.notes, note];
   },
   updateNote: (state, updatedNote) => {
-    state.notes[updatedNote.id] = updatedNote;
+    state.notes = [
+      ...state.notes.map((note) =>
+        note.id !== updatedNote.id ? note : { ...note, ...updatedNote }
+      ),
+    ];
   },
   deleteNote: (state, noteId) => {
     state.notes = state.notes.filter(({ id }) => id !== noteId);

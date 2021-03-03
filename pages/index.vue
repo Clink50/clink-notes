@@ -35,9 +35,9 @@
     </section>
     <NoteModal
       v-if="showNoteModal"
-      :edit-note="noteDetails || null"
       :options="categories"
       :pill-name="pills[activePillId].text"
+      :edit-note="noteDetails"
       @close="closeModal"
     />
   </main>
@@ -62,23 +62,23 @@ export default {
     ...mapGetters('notes', ['notesAvailable', 'currentNotes', 'notesCompleted', 'totalNotes']),
 
     filteredNotes() {
-      return (this.activePillId === 0
+      return this.activePillId === 0
         ? this.notes.filter(this.filterNotes())
-        : this.notes.filter(({ pillId }) => pillId === this.activePillId).filter(this.filterNotes())
-      ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        : this.notes
+            .filter(({ pillId }) => pillId === this.activePillId)
+            .filter(this.filterNotes()); // .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     },
 
     categories: () => ['Home', 'Work', 'Personal'],
   },
   methods: {
     ...mapMutations('notes', ['deleteNote', 'completeNote']),
-
-    filterNotes() {
-      return ({ title }) => title.toLowerCase().startsWith(this.searchText.toLowerCase());
-    },
     editNote(id) {
       this.noteDetails = this.notes[id];
       this.showNoteModal = true;
+    },
+    filterNotes() {
+      return ({ title }) => title.toLowerCase().startsWith(this.searchText.toLowerCase());
     },
     closeModal() {
       this.noteDetails = null;

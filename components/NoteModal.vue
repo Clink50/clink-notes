@@ -25,7 +25,7 @@
               />
               <div class="modal-footer">
                 <button @click.prevent="$emit('close')">Cancel</button>
-                <button @click.prevent="onAddUpdateNote(note)">
+                <button @click.prevent="onCreateUpdateNote">
                   {{ type }}
                 </button>
               </div>
@@ -61,7 +61,6 @@ export default {
       note: this.editNote
         ? { ...this.editNote }
         : {
-            noteId: '',
             title: '',
             category: this.pillName === 'All' ? '' : this.pillName,
             description: '',
@@ -79,37 +78,26 @@ export default {
   methods: {
     ...mapMutations('notes', ['addNote', 'updateNote']),
 
-    onAddUpdateNote(data) {
-      const chosenPillId = this.pills.find((pill) => pill.text === data.category).id;
-      let noteDetails = {};
+    onCreateUpdateNote() {
+      const chosenPillId = this.pills.find((pill) => pill.text === this.note.category).id;
+      let details = {};
+
       if (this.editNote) {
-        noteDetails = {
-          id: this.editNote.id,
+        details = {
+          ...this.note,
           pillId: chosenPillId,
-          done: false,
-          title: data.title,
-          category: data.category,
-          description: data.description,
           createdAt: new Date(),
         };
-
-        this.updateNote(noteDetails);
+        this.updateNote(details);
       } else {
-        const newNoteId = this.notes.length + 1;
-
-        noteDetails = {
-          id: newNoteId,
-          pillId: chosenPillId,
+        details = {
+          ...this.note,
+          pillId: this.pills.find((pill) => pill.text === this.note.category).id,
           done: false,
-          title: data.title,
-          category: data.category,
-          description: data.description,
           createdAt: new Date(),
         };
-
-        this.addNote(noteDetails);
+        this.addNote(details);
       }
-
       this.$emit('close');
     },
   },
