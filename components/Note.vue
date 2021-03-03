@@ -12,13 +12,13 @@
         <label :for="`${category}-${id}`" class="title">{{ title }}</label>
       </div>
       <div class="note__header--buttons">
-        <button @click.prevent="$emit('edit')">
+        <button @click.prevent="$emit('edit', id)">
           <i class="fas fa-pencil-alt"></i>
         </button>
-        <button @click.prevent="togglePopover(!popover)">
+        <button @click.prevent="popover = !popover">
           <i class="fas fa-trash-alt"></i>
         </button>
-        <Popover v-if="popover" @close="togglePopover(false)" v-on="$listeners" />
+        <Popover v-if="popover" :note-id="id" @close="popover = false" v-on="$listeners" />
       </div>
     </div>
     <div class="note__content">
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapMutations } from 'vuex';
 
 export default {
   props: {
@@ -58,16 +58,18 @@ export default {
       type: Date,
     },
   },
+  data() {
+    return {
+      popover: false,
+    };
+  },
   computed: {
-    ...mapState('popover', ['popover']),
-
     noteColor() {
       return this.done ? 'gray' : this.getColor(this.category);
     },
   },
   methods: {
     ...mapMutations('notes', ['completeNote']),
-    ...mapMutations('popover', ['togglePopover']),
 
     getColor(type) {
       return {

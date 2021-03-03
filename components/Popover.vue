@@ -2,18 +2,19 @@
   <div class="popover">
     <p class="popover__description">Delete note?</p>
     <div class="btn-group">
-      <button @click="togglePopover(false)">Cancel</button>
-      <button @click="$emit('delete')">Delete</button>
+      <button @click="$emit('close')">Cancel</button>
+      <button @click="$emit('delete', noteId)">Delete</button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
-
 export default {
-  methods: {
-    ...mapMutations('popover', ['togglePopover']),
+  props: {
+    noteId: {
+      type: Number,
+      required: true,
+    },
   },
 };
 </script>

@@ -26,16 +26,16 @@
             v-for="note in filteredNotes"
             :key="note.id"
             v-bind="note"
-            @edit="editNote(note.id)"
-            @delete="deleteNote(note.id)"
-            @done="completeNote(note.id)"
+            @edit="editNote"
+            @delete="deleteNote"
+            @done="completeNote"
           />
         </div>
       </div>
     </section>
     <NoteModal
       v-if="showNoteModal"
-      :edit-note="noteDetails || undefined"
+      :edit-note="noteDetails || null"
       :options="categories"
       :pill-name="pills[activePillId].text"
       @close="closeModal"
@@ -58,7 +58,6 @@ export default {
   computed: {
     ...mapState('pills', ['pills']),
     ...mapState('notes', ['notes']),
-    ...mapState('popover', ['popover']),
 
     ...mapGetters('notes', ['notesAvailable', 'currentNotes', 'notesCompleted', 'totalNotes']),
 
@@ -69,23 +68,21 @@ export default {
       ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     },
 
-    categories() {
-      return ['Home', 'Work', 'Personal'];
-    },
+    categories: () => ['Home', 'Work', 'Personal'],
   },
   methods: {
-    ...mapMutations('notes', ['addNote', 'updateNote', 'deleteNote', 'completeNote']),
+    ...mapMutations('notes', ['deleteNote', 'completeNote']),
 
     filterNotes() {
       return ({ title }) => title.toLowerCase().startsWith(this.searchText.toLowerCase());
     },
     editNote(id) {
-      this.showNoteModal = true;
       this.noteDetails = this.notes[id];
+      this.showNoteModal = true;
     },
     closeModal() {
-      this.showNoteModal = false;
       this.noteDetails = null;
+      this.showNoteModal = false;
     },
   },
 };
