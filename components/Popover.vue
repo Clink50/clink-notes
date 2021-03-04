@@ -27,13 +27,13 @@ export default {
   top: -10rem;
   right: -15.4rem;
   padding: 1.6rem;
-  color: $input-color;
+  color: var(--input-color);
   font-size: 1.6rem;
   font-weight: 500;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 3px 6px $gray;
-  background: $white;
+  box-shadow: 0px 3px 6px var(--gray);
+  background: var(--white);
 
   &::after {
     content: '';
@@ -43,7 +43,7 @@ export default {
     width: 20px;
     height: 20px;
     transform: translate(-50%, -50%) rotate(45deg);
-    background-color: $white;
+    background-color: var(--white);
   }
 
   &__description {
@@ -61,9 +61,9 @@ export default {
       background: transparent;
       text-transform: uppercase;
       letter-spacing: 2px;
-      color: $blue;
+      color: var(--blue);
       font-size: 1.4rem;
-      font-family: $main-font;
+      font-family: var(--main-font);
       padding: 1rem 0.8rem;
       cursor: pointer;
 

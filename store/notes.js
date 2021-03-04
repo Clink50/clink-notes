@@ -7,8 +7,13 @@ export const mutations = {
     state.notes = notes;
   },
   addNote: (state, note) => {
-    note.id = state.notes[state.notes.length - 1].id + 1;
-    state.notes = [...state.notes, note];
+    state.notes = [
+      ...state.notes,
+      {
+        ...note,
+        id: state.notes[state.notes.length - 1]?.id + 1 || 0,
+      },
+    ];
   },
   updateNote: (state, updatedNote) => {
     state.notes = [
@@ -21,7 +26,9 @@ export const mutations = {
     state.notes = state.notes.filter(({ id }) => id !== noteId);
   },
   completeNote: (state, noteId) => {
-    state.notes[noteId].done = !state.notes[noteId].done;
+    state.notes = [
+      ...state.notes.map((note) => (note.id !== noteId ? note : { ...note, done: !note.done })),
+    ];
   },
 };
 

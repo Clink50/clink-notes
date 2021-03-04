@@ -52,9 +52,9 @@ export default {
   padding: 1rem 3.5rem;
   border-radius: 0.6rem;
   font-size: 1.6rem;
-  font-family: $main-font;
+  font-family: var(--main-font);
   cursor: pointer;
-  color: $input-color;
+  color: var(--input-color);
   position: relative;
 
   &__circle {
@@ -70,22 +70,22 @@ export default {
 }
 
 .active {
-  color: $white;
+  color: var(--white);
 }
 
 .blue {
-  background-color: $light-blue;
+  background-color: var(--light-blue);
 }
 
 .orange {
-  background-color: $orange;
+  background-color: var(--orange);
 }
 
 .green {
-  background-color: $green;
+  background-color: var(--green);
 }
 
 .purple {
-  background-color: $purple;
+  background-color: var(--purple);
 }
 </style>

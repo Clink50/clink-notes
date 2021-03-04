@@ -126,12 +126,12 @@ export default {
       padding: 2rem 3.4rem;
       background-color: #fff;
       border-radius: 4px;
-      box-shadow: 0 3px 6px $gray;
+      box-shadow: 0 3px 6px var(--gray);
       transition: all 0.3s ease;
 
       hr {
         margin: 1.7rem -3.4rem 2.4rem;
-        border: 0.5px solid $input-color;
+        border: 0.5px solid var(--input-color);
         opacity: 0.15;
       }
 
@@ -141,7 +141,7 @@ export default {
 
         h3 {
           font-weight: 400;
-          color: $input-color;
+          color: var(--input-color);
           margin-top: 0;
           opacity: 0.8;
         }
@@ -165,9 +165,9 @@ export default {
               padding: 1.4rem 1.6rem;
               border: none;
               outline: none;
-              background-color: $off-white;
+              background-color: var(--off-white);
               border-radius: 4px 4px 0px 0px;
-              font-family: $main-font;
+              font-family: var(--main-font);
               font-size: 1.6rem;
 
               &:focus {
@@ -182,9 +182,9 @@ export default {
               padding: 1.4rem 1.6rem;
               border: none;
               outline: none;
-              background-color: $off-white;
+              background-color: var(--off-white);
               border-radius: 4px 4px 0px 0px;
-              font-family: $main-font;
+              font-family: var(--main-font);
               font-size: 1.4rem;
               cursor: pointer;
               position: relative;
@@ -198,11 +198,11 @@ export default {
           .description {
             width: 47.5rem;
             height: 22.5rem;
-            font-family: $main-font;
+            font-family: var(--main-font);
             font-size: 1.6rem;
             border: none;
             outline: none;
-            background-color: $off-white;
+            background-color: var(--off-white);
             border-radius: 4px 4px 0px 0px;
             padding: 1.8rem 1.6rem;
             margin: 2.8rem 0;
@@ -225,9 +225,9 @@ export default {
           background: transparent;
           text-transform: uppercase;
           letter-spacing: 2px;
-          color: $blue;
+          color: var(--blue);
           font-size: 1.4rem;
-          font-family: $main-font;
+          font-family: var(--main-font);
           padding: 1rem 0.8rem;
           cursor: pointer;
 

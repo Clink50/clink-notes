@@ -2,14 +2,16 @@
   <div class="note" :class="noteColor" :style="done ? 'text-decoration: line-through;' : ''">
     <div class="note__header">
       <div class="note__header--title">
-        <input
-          :id="`${category}-${id}`"
-          type="checkbox"
-          :checked="done"
-          :name="`${category}-${id}`"
-          @change="completeNote(id)"
-        />
-        <label :for="`${category}-${id}`" class="title">{{ title }}</label>
+        <div class="checkbox-container">
+          <input
+            :id="`${category}-${id}`"
+            type="checkbox"
+            :checked="done"
+            :name="`${category}-${id}`"
+            @change="completeNote(id)"
+          />
+          <label :for="`${category}-${id}`" class="title">{{ title }}</label>
+        </div>
       </div>
       <div class="note__header--buttons">
         <button @click.prevent="$emit('edit', id)">
@@ -24,7 +26,7 @@
     <div class="note__content">
       <p class="note__content--description">{{ description }}</p>
     </div>
-    <p class="note__date">{{ createdAt | date }}</p>
+    <p class="note__date">{{ createdAt | shortDate }}</p>
   </div>
 </template>
 
@@ -86,11 +88,12 @@ export default {
 .note {
   padding: 1.6rem;
   border-radius: 4px;
-  color: $white;
+  color: #fff;
   display: flex;
   flex-direction: column;
   text-align: left;
   position: relative;
+  width: 450px;
 
   &__header {
     display: flex;
@@ -102,15 +105,51 @@ export default {
       font-size: 2rem;
       flex: 1;
 
-      input {
-        margin-right: 2.2rem;
-        cursor: pointer;
-      }
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        position: relative;
 
-      label {
-        font-weight: 400;
-        cursor: pointer;
-        user-select: none;
+        input[type='checkbox'] {
+          height: 0;
+          width: 0;
+          visibility: hidden;
+          display: none;
+          position: relative;
+
+          & + label::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 0;
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--check-color);
+            border-radius: 4px;
+          }
+
+          &:checked + label::after {
+            content: '';
+            position: absolute;
+            top: var(--check-top);
+            left: var(--check-left);
+            height: var(--check-height);
+            width: var(--check-width);
+            border-right: var(--check-thickness) solid var(--check-color);
+            border-top: var(--check-thickness) solid var(--check-color);
+            transform: scaleX(-1) rotate(135deg);
+            transform-origin: left top;
+            animation-duration: 800ms;
+            animation-timing-function: ease;
+            animation-name: checkmark;
+          }
+        }
+
+        label {
+          margin-left: 3rem;
+          cursor: pointer;
+          user-select: none;
+        }
       }
     }
 

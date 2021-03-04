@@ -8,8 +8,8 @@
 
 html {
   font-size: 62.5%;
-  font-family: $main-font;
-  background-color: $light-gray;
+  font-family: var(--main-font);
+  background-color: var(--light-gray);
 }
 
 body {

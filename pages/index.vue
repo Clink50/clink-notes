@@ -13,14 +13,23 @@
       <button class="add-note" @click="showNoteModal = true">+ Add Note</button>
     </section>
     <section class="main-container">
-      <div v-if="notesAvailable(activePillId)" class="no-notes-container">
+      <div v-if="notesAvailable(activePillId) && activePillId === 0" class="no-notes-container">
         <h1 class="no-notes">You don't have any notes</h1>
-        <img src="~/assets/img/add-note-illustration.svg" alt="No notes illustration" />
+        <img src="~/assets/img/add-note.svg" alt="No notes illustration" />
+      </div>
+      <div
+        v-else-if="notesAvailable(activePillId) && activePillId !== 0"
+        class="no-notes-container"
+      >
+        <h1 class="no-notes">Couldn't find any notes</h1>
+        <img src="~/assets/img/find-note.svg" alt="Couldn't find any notes illustration" />
       </div>
       <div v-else class="completed-and-notes-container">
-        <p class="completed">
+        <p v-if="notesCompleted(activePillId) !== totalNotes(activePillId)" class="completed">
           You have {{ notesCompleted(activePillId) }}/{{ totalNotes(activePillId) }} notes completed
         </p>
+        <p v-else class="completed">You have completed all notes</p>
+        <ProgressBar :completed="notesCompleted(activePillId)" :total="totalNotes(activePillId)" />
         <div class="notes-container">
           <Note
             v-for="note in filteredNotes"
@@ -62,11 +71,10 @@ export default {
     ...mapGetters('notes', ['notesAvailable', 'currentNotes', 'notesCompleted', 'totalNotes']),
 
     filteredNotes() {
-      return this.activePillId === 0
-        ? this.notes.filter(this.filterNotes())
-        : this.notes
-            .filter(({ pillId }) => pillId === this.activePillId)
-            .filter(this.filterNotes()); // .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      return (this.activePillId === 0
+        ? this.notes.filter(this.searchNotes())
+        : this.notes.filter(({ pillId }) => pillId === this.activePillId).filter(this.searchNotes())
+      ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     },
 
     categories: () => ['Home', 'Work', 'Personal'],
@@ -77,8 +85,8 @@ export default {
       this.noteDetails = this.notes[id];
       this.showNoteModal = true;
     },
-    filterNotes() {
-      return ({ title }) => title.toLowerCase().startsWith(this.searchText.toLowerCase());
+    searchNotes() {
+      return ({ title }) => title.toLowerCase().includes(this.searchText.toLowerCase());
     },
     closeModal() {
       this.noteDetails = null;
@@ -113,12 +121,12 @@ export default {
       text-transform: uppercase;
       border: none;
       outline: none;
-      background-color: $blue;
+      background-color: var(--blue);
       border-radius: 4px;
-      font-family: $main-font;
+      font-family: var(--main-font);
       cursor: pointer;
-      color: $white;
-      box-shadow: 0px 2px 2px $shadow;
+      color: var(--white);
+      box-shadow: 0px 2px 2px var(--shadow);
       letter-spacing: 1.25px;
     }
   }
@@ -132,8 +140,8 @@ export default {
 
     .no-notes {
       opacity: 0.6;
-      color: $input-color;
-      font-family: $main-font;
+      color: var(--input-color);
+      font-family: var(--main-font);
       font-weight: 400;
     }
 
@@ -150,14 +158,14 @@ export default {
 
   .completed-and-notes-container {
     margin-top: 3.2rem;
+    position: relative;
 
     .completed {
       font-size: 1.8rem;
       text-align: left;
       font-weight: 600;
-      color: $input-color;
+      color: var(--input-color);
       padding: 0.8rem 0;
-      border-bottom: 4px solid rgba(33, 150, 243, 0.25);
       margin-bottom: 2.4rem;
     }
 
@@ -171,22 +179,22 @@ export default {
 
 // TODO: Figure out how to not duplicate this between here and the pill vue
 .blue {
-  background-color: $light-blue;
+  background-color: var(--light-blue);
 }
 
 .orange {
-  background-color: $orange;
+  background-color: var(--orange);
 }
 
 .green {
-  background-color: $green;
+  background-color: var(--green);
 }
 
 .purple {
-  background-color: $purple;
+  background-color: var(--purple);
 }
 
 .gray {
-  background-color: $dark-gray;
+  background-color: var(--dark-gray);
 }
 </style>

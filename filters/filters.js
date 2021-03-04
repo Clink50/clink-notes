@@ -1,8 +1,6 @@
 import Vue from 'vue';
 
-const dateFilter = (value) => {
-  return formatDate(value);
-};
+const dateFilter = (value) => formatDate(value);
 
 const formatDate = (inputDate) => {
   const date = new Date(inputDate);
@@ -12,8 +10,16 @@ const formatDate = (inputDate) => {
   return `${month}/${day}/${year}`;
 };
 
+const shortDateFilter = (value) =>
+  new Date(value).toLocaleString('en-us', {
+    month: 'short',
+    year: 'numeric',
+    day: 'numeric',
+  });
+
 const filters = {
-  date: dateFilter,
+  slashDate: dateFilter,
+  shortDate: shortDateFilter,
 };
 
 for (const name in filters) {

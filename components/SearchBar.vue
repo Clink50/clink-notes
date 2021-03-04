@@ -38,8 +38,8 @@ export default {
     padding-left: calc(2rem + 3rem);
     border: none;
     outline: none;
-    box-shadow: 0px 3px 6px $gray;
-    font-family: $main-font;
+    box-shadow: 0px 3px 6px var(--gray);
+    font-family: var(--main-font);
     opacity: 0.6;
 
     &:focus {
@@ -47,7 +47,7 @@ export default {
     }
 
     &::placeholder {
-      color: $input-color;
+      color: var(--input-color);
     }
   }
 

@@ -1,0 +1,37 @@
+@keyframes checkmark {
+	0% {
+		height: 0;
+		width: 0;
+	}
+	20% {
+		height: 0;
+		width: var(--check-width);
+	}
+	40% {
+		height: var(--check-height);
+		width: var(--check-width);
+	}
+	100% {
+		height: var(--check-height);
+		width: var(--check-width);
+	}
+}
+
+@keyframes uncheckmark {
+	0% {
+		height: var(--check-height);
+		width: var(--check-width);
+	}
+	20% {
+		height: var(--check-height);
+		width: var(--check-width);
+	}
+	40% {
+		height: 0;
+		width: var(--check-width);
+	}
+	100% {
+		height: 0;
+		width: 0;
+	}
+}
