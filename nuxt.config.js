@@ -1,4 +1,5 @@
 export default {
+  target: 'static',
   ssr: true,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -83,4 +84,9 @@ export default {
 
   // Server Middleware: https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-servermiddleware
   serverMiddleware: [],
+
+  generate: {
+    // https://nuxtjs.org/docs/2.x/deployment/netlify-deployment/
+    fallback: true,
+  },
 };
