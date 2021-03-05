@@ -1,4 +1,6 @@
-# notes
+# https://clinknotes.netlify.app/
+
+# Clink Notes
 
 ## Build Setup
 
