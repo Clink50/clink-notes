@@ -18,7 +18,9 @@
         <img src="~/assets/img/add-note.svg" alt="No notes illustration" />
       </div>
       <div
-        v-else-if="notesAvailable(activePillId) && activePillId !== 0"
+        v-else-if="
+          (notesAvailable(activePillId) && activePillId !== 0) || filteredNotes.length === 0
+        "
         class="no-notes-container"
       >
         <h1 class="no-notes">Couldn't find any notes</h1>
@@ -98,9 +100,13 @@ export default {
 
 <style lang="scss">
 .container {
-  margin: 6.4rem auto;
+  margin: 0 auto;
   text-align: center;
   width: 85rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: calc(100vh - 10rem);
 
   .pills-container {
     display: flex;

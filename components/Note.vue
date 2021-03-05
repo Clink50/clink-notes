@@ -120,7 +120,7 @@ export default {
           & + label::before {
             content: '';
             position: absolute;
-            top: 4px;
+            top: 3px;
             left: 0;
             width: 18px;
             height: 18px;

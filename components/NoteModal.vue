@@ -25,7 +25,11 @@
               />
               <div class="modal-footer">
                 <button @click.prevent="$emit('close')">Cancel</button>
-                <button @click.prevent="onCreateUpdateNote">
+                <button
+                  :disabled="invalidInput"
+                  :class="{ disabled: invalidInput }"
+                  @click.prevent="onCreateUpdateNote"
+                >
                   {{ type }}
                 </button>
               </div>
@@ -73,6 +77,9 @@ export default {
 
     type() {
       return this.editNote ? 'Update' : 'Add';
+    },
+    invalidInput() {
+      return !this.note.title || !this.note.description || !this.note.category;
     },
   },
   methods: {
@@ -233,6 +240,11 @@ export default {
 
           &:not(:last-child) {
             margin-right: 2.4rem;
+          }
+
+          &.disabled {
+            color: var(--disabled);
+            cursor: default;
           }
         }
       }
