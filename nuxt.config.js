@@ -4,7 +4,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Notes',
+    title: 'Clink Notes',
     htmlAttrs: {
       lang: 'en',
     },
@@ -14,7 +14,7 @@ export default {
       { hid: 'description', name: 'description', content: 'The perfect Note taking application!' },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/clink-notes.ico' },
       {
         rel: 'stylesheet',
         href:
