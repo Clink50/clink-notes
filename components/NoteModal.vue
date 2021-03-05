@@ -127,14 +127,19 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 90%;
 
     .modal-container {
-      width: 85rem;
       padding: 2rem 3.4rem;
       background-color: #fff;
       border-radius: 4px;
       box-shadow: 0 3px 6px var(--gray);
       transition: all 0.3s ease;
+
+      @media screen and (min-width: 1024px) {
+        width: 85rem;
+        margin: 0 auto;
+      }
 
       hr {
         margin: 1.7rem -3.4rem 2.4rem;
@@ -155,7 +160,7 @@ export default {
       }
 
       .modal-body {
-        width: 75rem;
+        width: 100%;
 
         #note-form {
           display: flex;
@@ -163,12 +168,18 @@ export default {
 
           .input-group {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            width: 100%;
+
+            @media screen and (min-width: 767px) {
+              flex-direction: row;
+              width: auto;
+            }
 
             .title {
-              flex: 2;
-              margin-right: 1.8rem;
+              margin-bottom: 2.8rem;
               padding: 1.4rem 1.6rem;
               border: none;
               outline: none;
@@ -176,9 +187,17 @@ export default {
               border-radius: 4px 4px 0px 0px;
               font-family: var(--main-font);
               font-size: 1.6rem;
+              width: 100%;
 
               &:focus {
                 @include input-focus;
+              }
+
+              @media screen and (min-width: 767px) {
+                margin-bottom: 0;
+                margin-right: 1.8rem;
+                flex: 2;
+                width: auto;
               }
             }
 
@@ -195,16 +214,20 @@ export default {
               font-size: 1.4rem;
               cursor: pointer;
               position: relative;
+              width: 100%;
 
               &:focus {
                 @include input-focus;
+              }
+
+              @media screen and (min-width: 767px) {
+                width: auto;
               }
             }
           }
 
           .description {
-            width: 47.5rem;
-            height: 22.5rem;
+            height: 20rem;
             font-family: var(--main-font);
             font-size: 1.6rem;
             border: none;
@@ -214,9 +237,14 @@ export default {
             padding: 1.8rem 1.6rem;
             margin: 2.8rem 0;
             resize: none;
+            width: 100%;
 
             &:focus {
               @include input-focus;
+            }
+
+            @media screen and (min-width: 767px) {
+              width: 64%;
             }
           }
         }

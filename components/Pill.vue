@@ -49,6 +49,7 @@ export default {
   background-color: transparent;
   outline: none;
   border: none;
+  width: 100%;
   padding: 1rem 3.5rem;
   border-radius: 0.6rem;
   font-size: 1.6rem;
@@ -56,6 +57,10 @@ export default {
   cursor: pointer;
   color: var(--input-color);
   position: relative;
+
+  @media screen and (min-width: 767px) {
+    width: initial;
+  }
 
   &__circle {
     display: block;

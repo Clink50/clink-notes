@@ -102,20 +102,44 @@ export default {
 .container {
   margin: 0 auto;
   text-align: center;
-  width: 85rem;
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: calc(100vh - 10rem);
+  padding: 0 2rem;
+
+  @media screen and (min-width: 767px) {
+    width: 85rem;
+  }
 
   .pills-container {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
 
-    .left-pills {
-      flex: 1;
-      text-align: left;
+    @media screen and (min-width: 767px) {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
 
+    .left-pills {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 2rem;
+      width: 100%;
+
+      @media screen and (min-width: 767px) {
+        flex: 1;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-bottom: 0;
+        width: auto;
+      }
       .pill:not(:last-child) {
         margin-right: 1rem;
       }
@@ -127,6 +151,7 @@ export default {
       text-transform: uppercase;
       border: none;
       outline: none;
+      width: 100%;
       background-color: var(--blue);
       border-radius: 4px;
       font-family: var(--main-font);
@@ -134,6 +159,10 @@ export default {
       color: var(--white);
       box-shadow: 0px 2px 2px var(--shadow);
       letter-spacing: 1.25px;
+
+      @media screen and (min-width: 767px) {
+        width: initial;
+      }
     }
   }
 }
@@ -177,8 +206,12 @@ export default {
 
     .notes-container {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr;
       grid-gap: 2.4rem;
+
+      @media screen and (min-width: 767px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   }
 }

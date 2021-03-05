@@ -21,29 +21,40 @@ export default {
 
 <style lang="scss" scoped>
 .popover {
-  width: 36rem;
+  width: 70%;
   height: 10rem;
   position: absolute;
   top: -10rem;
-  right: -15.4rem;
+  right: 0;
   padding: 1.6rem;
   color: var(--input-color);
   font-size: 1.6rem;
   font-weight: 500;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 3px 6px var(--gray);
+  box-shadow: 0 3px 6px var(--gray);
   background: var(--white);
+
+  @media screen and (min-width: 1440px) {
+    width: 36rem;
+    right: -15.4rem;
+  }
 
   &::after {
     content: '';
     position: absolute;
-    left: 50%;
+    right: 5px;
     bottom: -15px;
     width: 20px;
     height: 20px;
     transform: translate(-50%, -50%) rotate(45deg);
     background-color: var(--white);
+    z-index: 1;
+
+    @media screen and (min-width: 1440px) {
+      left: 50%;
+      right: initial;
+    }
   }
 
   &__description {

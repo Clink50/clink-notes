@@ -20,13 +20,22 @@ footer {
   font-family: var(--main-font);
   letter-spacing: 1px;
 
-  p a {
-    color: var(--blue);
-    text-decoration: none;
-    transition: color 0.2s ease-out;
+  p {
+    text-align: center;
+    line-height: 2;
 
-    &:hover {
-      color: var(--purple);
+    @media screen and (min-width: 767px) {
+      text-align: initial;
+      line-height: initial;
+    }
+    a {
+      color: var(--blue);
+      text-decoration: none;
+      transition: color 0.2s ease-out;
+
+      &:hover {
+        color: var(--purple);
+      }
     }
   }
 }

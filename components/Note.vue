@@ -93,7 +93,6 @@ export default {
   flex-direction: column;
   text-align: left;
   position: relative;
-  width: 450px;
 
   &__header {
     display: flex;
