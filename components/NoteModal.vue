@@ -202,6 +202,7 @@ export default {
             }
 
             .category {
+              -webkit-appearance: none;
               // appearance: none;
               flex: 1;
               margin: 0;
