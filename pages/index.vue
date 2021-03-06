@@ -1,6 +1,5 @@
 <template>
   <main class="container">
-    <button @click="generateNote">Add Random Note</button>
     <SearchBar v-model="searchText" placeholder="Search notes..." />
     <section class="pills-container">
       <div class="left-pills">
@@ -11,6 +10,7 @@
           @pillChange="activePillId = pill.id"
         />
       </div>
+      <button class="add-note" style="margin-right: 1rem" @click="generateNote">+ Joke Note</button>
       <button class="add-note" @click="showNoteModal = true">+ Add Note</button>
     </section>
     <section class="main-container">
@@ -96,18 +96,26 @@ export default {
       this.showNoteModal = false;
     },
     async generateNote() {
-      const data = await fetch('/api/dad-joke');
+      try {
+        const response = await fetch('/api/dad-joke');
 
-      console.log(data);
+        if (!response.ok) {
+          return;
+        }
 
-      this.addNote({
-        done: false,
-        title: 'A Dad Joke',
-        description: data.body.joke,
-        category: this.categories[Math.floor(Math.random() * this.categories.length)],
-        pillId: 1,
-        createdAt: new Date(),
-      });
+        const { joke } = await response.json();
+
+        this.addNote({
+          done: false,
+          title: 'A Dad Joke',
+          description: joke,
+          category: this.categories[Math.floor(Math.random() * this.categories.length)],
+          pillId: 1,
+          createdAt: new Date(),
+        });
+      } catch (err) {
+        console.error(err);
+      }
     },
   },
 };
