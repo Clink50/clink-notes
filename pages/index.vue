@@ -96,7 +96,7 @@ export default {
       this.showNoteModal = false;
     },
     async generateNote() {
-      const { body } = await fetch('/api/dad-joke');
+      const { joke } = await fetch('/api/dad-joke');
 
       this.addNote({
         done: false,
