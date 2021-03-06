@@ -101,7 +101,7 @@ export default {
       this.addNote({
         done: false,
         title: 'A Dad Joke',
-        description: body.joke,
+        description: joke,
         category: this.categories[Math.floor(Math.random() * this.categories.length)],
         pillId: 1,
         createdAt: new Date(),
