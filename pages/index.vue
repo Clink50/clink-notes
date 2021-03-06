@@ -1,5 +1,6 @@
 <template>
   <main class="container">
+    <button @click="generateNote">Add Random Note</button>
     <SearchBar v-model="searchText" placeholder="Search notes..." />
     <section class="pills-container">
       <div class="left-pills">
@@ -82,7 +83,7 @@ export default {
     categories: () => ['Home', 'Work', 'Personal'],
   },
   methods: {
-    ...mapMutations('notes', ['deleteNote', 'completeNote']),
+    ...mapMutations('notes', ['addNote', 'deleteNote', 'completeNote']),
     editNote(id) {
       this.noteDetails = this.notes[id];
       this.showNoteModal = true;
@@ -93,6 +94,18 @@ export default {
     closeModal() {
       this.noteDetails = null;
       this.showNoteModal = false;
+    },
+    async generateNote() {
+      const data = await fetch('/api/dad-joke');
+      console.log(data);
+      this.addNote({
+        done: false,
+        title: 'A Dad Joke',
+        description: data.joke,
+        category: 'Home',
+        pillId: 1,
+        createdAt: new Date(),
+      });
     },
   },
 };
