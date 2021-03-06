@@ -11,12 +11,14 @@
             <form id="note-form" @submit.prevent="onSubmit">
               <div class="input-group">
                 <input v-model="note.title" class="title" type="text" placeholder="Add title..." />
-                <select v-model="note.category" class="category">
-                  <option value="" disabled>Select Category</option>
-                  <option v-for="(option, index) in options" :key="index" :value="option">
-                    {{ option }}
-                  </option>
-                </select>
+                <div class="select-container">
+                  <select v-model="note.category" class="category">
+                    <option value="" disabled>Select Category</option>
+                    <option v-for="(option, index) in options" :key="index" :value="option">
+                      {{ option }}
+                    </option>
+                  </select>
+                </div>
               </div>
               <textarea
                 v-model="note.description"
@@ -195,34 +197,53 @@ export default {
 
               @media screen and (min-width: 767px) {
                 margin-bottom: 0;
-                margin-right: 1.8rem;
+                margin-right: 1.5rem;
                 flex: 2;
                 width: auto;
               }
             }
 
-            .category {
-              -webkit-appearance: none;
-              // appearance: none;
-              flex: 1;
-              margin: 0;
-              padding: 1.4rem 1.6rem;
-              border: none;
-              outline: none;
-              background-color: var(--off-white);
-              border-radius: 4px 4px 0px 0px;
-              font-family: var(--main-font);
-              font-size: 1.4rem;
-              cursor: pointer;
+            .select-container {
               position: relative;
-              width: 100%;
+              flex: 1.1;
 
-              &:focus {
-                @include input-focus;
+              .category {
+                -webkit-appearance: none;
+                appearance: none;
+                margin: 0;
+                padding: 1.4rem 1.6rem;
+                border: none;
+                outline: none;
+                background-color: var(--off-white);
+                color: rgb(117, 117, 117);
+                border-radius: 4px 4px 0px 0px;
+                font-family: var(--main-font);
+                font-size: 1.6rem;
+                cursor: pointer;
+                width: 100%;
+
+                &:focus {
+                  @include input-focus;
+                }
+
+                & option:not(:first-child) {
+                  color: rgba(0, 0, 0, 0.8);
+                }
               }
 
-              @media screen and (min-width: 767px) {
-                width: auto;
+              &::after {
+                content: '';
+                position: absolute;
+                z-index: 2;
+                right: 15px;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                height: 0;
+                width: 0;
+                border-top: 6px solid #ccc;
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                pointer-events: none;
               }
             }
           }
@@ -245,7 +266,7 @@ export default {
             }
 
             @media screen and (min-width: 767px) {
-              width: 64%;
+              width: 65%;
             }
           }
         }
