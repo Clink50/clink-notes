@@ -96,13 +96,13 @@ export default {
       this.showNoteModal = false;
     },
     async generateNote() {
-      const data = await fetch('/api/dad-joke');
-      console.log(data);
+      const { data } = await fetch('/api/dad-joke');
+
       this.addNote({
         done: false,
         title: 'A Dad Joke',
         description: data.joke,
-        category: 'Home',
+        category: this.categories[Math.floor(Math.random() * this.categories.length)],
         pillId: 1,
         createdAt: new Date(),
       });
