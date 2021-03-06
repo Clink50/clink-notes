@@ -1,33 +1,27 @@
 const fetch = require('node-fetch');
+
 exports.handler = async () => {
-  console.log('here');
   try {
-    const res = await fetch('https://icanhazdadjoke.com/', {
+    const response = await fetch('https://icanhazdadjoke.com', {
       headers: { Accept: 'application/json' },
     });
-    if (!res.ok) {
-      return {
-        statusCode: res.status,
-        body: res.statusText,
-      };
+    if (!response.ok) {
+      // NOT res.status >= 200 && res.status < 300
+      return { statusCode: response.status, body: response.statusText };
     }
-
-    const data = await res.json();
+    const data = await response.json();
 
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        msg: data.joke,
-      }),
-      error: '',
+      body: JSON.stringify({ msg: data.joke }),
     };
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    // output to netlify function log
+    console.log(error);
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        msg: err.message,
-      }),
+      // Could be a custom message or object i.e. JSON.stringify(err)
+      body: JSON.stringify({ msg: error.message }),
     };
   }
 };
