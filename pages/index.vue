@@ -10,7 +10,7 @@
           @pillChange="activePillId = pill.id"
         />
       </div>
-      <button class="add-note" style="margin-right: 1rem" @click="generateNote">+ Joke Note</button>
+      <button class="add-note random-note" @click="generateNote">+ Joke Note</button>
       <button class="add-note" @click="showNoteModal = true">+ Add Note</button>
     </section>
     <section class="main-container">
@@ -185,6 +185,15 @@ export default {
 
       @media screen and (min-width: 767px) {
         width: initial;
+      }
+
+      &.random-note {
+        margin-bottom: 1rem;
+
+        @media screen and (min-width: 767px) {
+          margin-right: 1rem;
+          margin-bottom: 0;
+        }
       }
     }
   }
