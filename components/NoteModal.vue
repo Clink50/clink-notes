@@ -121,7 +121,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: var(--black3);
   transition: opacity 0.3s ease;
 
   .modal-wrapper {
@@ -215,7 +215,7 @@ export default {
                 border: none;
                 outline: none;
                 background-color: var(--off-white);
-                color: rgb(117, 117, 117);
+                color: var(--gray2);
                 border-radius: 4px 4px 0px 0px;
                 font-family: var(--main-font);
                 font-size: 1.6rem;
@@ -227,7 +227,7 @@ export default {
                 }
 
                 & option:not(:first-child) {
-                  color: rgba(0, 0, 0, 0.8);
+                  color: var(--black2);
                 }
               }
 
@@ -240,7 +240,7 @@ export default {
                 transform: translate(-50%, -50%);
                 height: 0;
                 width: 0;
-                border-top: 6px solid #ccc;
+                border-top: 6px solid var(--disabled);
                 border-left: 6px solid transparent;
                 border-right: 6px solid transparent;
                 pointer-events: none;
