@@ -205,7 +205,11 @@ export default {
 
             .select-container {
               position: relative;
-              flex: 1.1;
+              width: 100%;
+
+              @media screen and (min-width: 767px) {
+                flex: 1.1;
+              }
 
               .category {
                 -webkit-appearance: none;
