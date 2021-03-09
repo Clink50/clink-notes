@@ -1,4 +1,4 @@
-# https://clinknotes.netlify.app/
+# https://clink-notes.netlify.app/
 
 # Clink Notes
 
@@ -20,4 +20,3 @@ $ npm run generate
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
-# sticy-notes
