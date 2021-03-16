@@ -39,7 +39,7 @@ export default {
   // },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/filters/filters'],
+  plugins: ['~/plugins/axios', '~/filters/filters'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -62,6 +62,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
   ],
 
   // Should hold all env variables that are public as these will
@@ -70,7 +71,57 @@ export default {
   publicRuntimeConfig: {
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
     axios: {
-      // baseURL: '',
+      baseURL: 'http://localhost:3000',
+      proxy: true,
+    },
+  },
+
+  proxy: {
+    '/api': 'http://localhost:3000',
+  },
+
+  auth: {
+    redirect: {
+      login: '/login',
+      home: '/',
+      logout: '/logout',
+    },
+    strategies: {
+      local: {
+        scheme: 'refresh',
+        token: {
+          property: 'accessToken',
+          maxAge: 1800,
+        },
+        refreshToken: {
+          property: 'refreshToken',
+          data: 'refreshToken',
+          maxAge: 60 * 60 * 24 * 30,
+        },
+        user: {
+          property: false,
+        },
+        endpoints: {
+          login: {
+            url: '/api/auth/login',
+            method: 'post',
+            propertyName: 'accessToken',
+          },
+          refresh: {
+            url: '/api/auth/refresh',
+            method: 'post',
+          },
+          user: {
+            url: '/api/auth/user',
+            method: 'get',
+            propertyName: false,
+          },
+          logout: {
+            url: '/api/auth/logout',
+            method: 'post',
+          },
+        },
+      },
     },
   },
 
@@ -83,7 +134,7 @@ export default {
   build: {},
 
   // Server Middleware: https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-servermiddleware
-  serverMiddleware: [],
+  serverMiddleware: ['~/api/auth'],
 
   generate: {
     // https://nuxtjs.org/docs/2.x/deployment/netlify-deployment/

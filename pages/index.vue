@@ -1,5 +1,6 @@
 <template>
   <main class="container">
+    <button v-if="$auth.loggedIn" @click="onLogout">Logout</button>
     <SearchBar v-model="searchText" placeholder="Search notes..." />
     <section class="pills-container">
       <div class="left-pills">
@@ -59,6 +60,7 @@
 import { mapState, mapMutations, mapGetters } from 'vuex';
 
 export default {
+  middleware: ['auth'],
   data() {
     return {
       activePillId: 0,
@@ -84,6 +86,9 @@ export default {
   },
   methods: {
     ...mapMutations('notes', ['addNote', 'deleteNote', 'completeNote']),
+    async onLogout() {
+      await this.$auth.logout();
+    },
     editNote(id) {
       this.noteDetails = this.notes[id];
       this.showNoteModal = true;

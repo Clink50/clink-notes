@@ -10,21 +10,26 @@ export const state = () => ({});
 export const mutations = {};
 
 export const actions = {
-  nuxtServerInit: ({ commit }, { error }) => {
+  nuxtServerInit: ({ dispatch, commit, state }, { error }) => {
+    // automatically refresh the access token on the initial request to the server, if possible
     try {
+      // const { accessToken, refreshToken } = state.auth;
+
+      // if (accessToken && refreshToken) {
+      //   try {
+      //     // refresh the access token
+      //     await dispatch('auth/refresh');
+      //   } catch (e) {
+      //     // catch any errors and automatically logout the user
+      //     await dispatch('auth/logout');
+      //   }
+      // }
+
       commit('notes/setNotes', notes);
       commit('pills/setPills', pills);
-      // const data = await $axios.$get('/posts.json');
-      // const postsArray = [];
-      // for (const key in data) {
-      //   postsArray.push({ ...data[key], id: key });
-      // }
-      // commit('posts/setPosts', postsArray);
     } catch (e) {
       console.log('Error on [nuxtServerInit] action.', e);
       if (e.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
         console.log(e.response.data);
       } else if (e.request) {
         console.log(e.request);
